@@ -123,21 +123,29 @@ This is an example of how to list things you need to use the software and how to
 ## Installation
 ### Installation for Linux with Virtual Environment
 *  #### Clone the repo
-   ```
+   ```bash
    git clone https://github.com/Ridmovies/fastapi-app-skeleton.git
    ```  
    
 * #### Enter the application root folder: 
-``` cd fastapi-app-skeleton ```
+```bash
+cd fastapi-app-skeleton 
+```
    
 * #### Create a virtual environment in the project's root folder:
-``` python3 -m venv .venv ```
+```bash
+python3 -m venv .venv 
+```
 
 * #### Activate the virtual environment:
-``` source .venv/bin/activate ```
+```bash
+source .venv/bin/activate 
+```
 
 * #### Install dependencies for the production environment: 
- ``` pip install -r requirements.txt ```
+```bash
+pip install -r requirements.txt 
+```
 
 * #### Change .env file
 1. Create postgres database or launch postgres docker 
@@ -173,6 +181,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [x] example app "posts"
 - [x] fix pytest mode
 - [x] Admin Panel
+- [] Docker
 
 
 
@@ -283,12 +292,12 @@ poetry remove <package_name>
 
 ## PostgreSQL
 ## Creating a PostgreSQL database via console
-### Шаг 1: Connecting to PostgreSQL shell
+### 1: Connecting to PostgreSQL shell
 ```bash
 sudo -u postgres psql
 ```
 
-### Шаг 2: Creating a new database
+### 2: Creating a new database
 ```bash
 CREATE DATABASE database_name;
 ```
@@ -329,6 +338,58 @@ alembic upgrade head
 ```bash
 alembic downgrade -1
 ```
+
+
+## Commands for working with Docker and Docker Compose
+These commands will help you manage containers and images in your project, providing a convenient development and testing process.
+
+### Creating an image from a Dockerfile
+```bash
+docker build -t image_name .
+```
+
+### Run a container from an image
+```bash
+docker run -p 8000:8000 image_name
+```
+
+### Remove all containers
+```bash
+docker rm $(docker ps -aq)
+```
+
+### Remove all images
+```bash
+docker rmi $(docker images -q)
+```
+
+### Stop and remove all services and images
+
+```bash
+docker-compose down --rmi all
+```
+
+### To start a console inside a running Docker container, use the docker exec command
+```bash
+docker exec -it container_name bash
+```
+
+### Run the container in interactive mode to gain shell access inside the container:
+```bash
+docker run -it --rm -p 9000:8000 container_name sh
+```
+
+
+
+This command stops and removes all services created with `docker-compose`, and removes the images used by these services.
+
+### Build a new image
+
+```bash
+docker-compose build
+```
+This command builds a new image based on the instructions in `docker-compose.yml`.
+
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
