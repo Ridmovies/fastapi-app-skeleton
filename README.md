@@ -121,6 +121,42 @@ This is an example of how to list things you need to use the software and how to
   ```
 
 ## Installation
+### Installation for Linux with Docker (sqlite database version)
+
+*  #### Clone the repo
+   ```bash
+   git clone https://github.com/Ridmovies/fastapi-app-skeleton.git
+   ```  
+  
+* ### Install Docker Engine
+- https://docs.docker.com/engine/install/
+- https://docs.docker.com/engine/install/ubuntu/
+
+* #### Enter the application root folder: 
+```bash
+cd fastapi-app-skeleton 
+```
+
+* #### Change .env file
+* Rename '.env.template' to '.env'
+* uncomment line ```DATABASE_URL=sqlite+aiosqlite:///database.db```
+* Replace the settings with your own
+
+
+### Creating an image from a Dockerfile
+```bash
+docker build -t image_name .
+```
+
+### Run a container from an image
+```bash
+docker run -p 8000:8000 image_name
+```
+
+* ### Open in browser OpenAPI (Swagger UI) Documentation
+        http://127.0.0.1:8000/docs
+
+
 ### Installation for Linux with Virtual Environment
 *  #### Clone the repo
    ```bash
@@ -157,8 +193,12 @@ pip install -r requirements.txt
 uvicorn src.main:app --host 127.0.0.1 --port 8000 --reload 
 ```
 
+
 <!-- USAGE EXAMPLES -->
 ## Usage
+
+* ### OpenAPI (Swagger UI) Documentation
+        http://127.0.0.1:8000/docs
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
@@ -383,10 +423,10 @@ docker run -it --rm -p 9000:8000 container_name sh
 
 This command stops and removes all services created with `docker-compose`, and removes the images used by these services.
 
-### Build a new image
+### Build a new image and run containers
 
 ```bash
-docker-compose build
+docker-compose up --build
 ```
 This command builds a new image based on the instructions in `docker-compose.yml`.
 
