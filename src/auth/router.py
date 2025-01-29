@@ -1,7 +1,11 @@
 from fastapi import APIRouter
 
+from src.auth.service import AuthService
+from src.database import SessionDep
+from src.users.schemas import UserCreate
+
 auth_router = APIRouter()
 
-@auth_router.get("")
-async def auth():
-    return {"message": "Auth"}
+@auth_router.post("/register")
+async def register(session: SessionDep, user: UserCreate):
+    return await AuthService.create_user(session, user)
