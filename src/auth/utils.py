@@ -1,5 +1,6 @@
 import bcrypt
 
+
 def get_hashed_password(password: str) -> bytes:
     salt = bcrypt.gensalt()
     pwd_bytes: bytes = password.encode()
@@ -14,3 +15,5 @@ def verify_password(
         password=password.encode(),
         hashed_password=hashed_password,
     )
+
+
