@@ -157,6 +157,32 @@ docker run -p 8000:8000 image_name
         http://127.0.0.1:8000/docs
 
 
+### Installation for Linux with docker-compose (postgres database version)
+
+*  #### Clone the repo
+   ```bash
+   git clone https://github.com/Ridmovies/fastapi-app-skeleton.git
+   ```  
+  
+* ### Install Docker Engine
+- https://docs.docker.com/engine/install/
+- https://docs.docker.com/engine/install/ubuntu/
+
+* #### Enter the application root folder: 
+```bash
+cd fastapi-app-skeleton 
+```
+
+### Build a new image and run containers
+```bash
+docker-compose up --build
+```
+
+* ### Open in browser OpenAPI (Swagger UI) Documentation
+        http://127.0.0.1:5000/docs
+
+
+
 ### Installation for Linux with Virtual Environment
 *  #### Clone the repo
    ```bash
@@ -220,8 +246,10 @@ _For more examples, please refer to the [Documentation](https://example.com)_
     - [x] sqlite+aiosqlite or postgresql+asyncpg switch
 - [x] example app "posts"
 - [x] fix pytest mode
+- [] Auth app
 - [x] Admin Panel
-- [] Docker
+- [x] Docker
+    - [x] Docker compose
 
 
 
