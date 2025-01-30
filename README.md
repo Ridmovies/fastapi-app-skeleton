@@ -246,7 +246,9 @@ _For more examples, please refer to the [Documentation](https://example.com)_
     - [x] sqlite+aiosqlite or postgresql+asyncpg switch
 - [x] example app "posts"
 - [x] fix pytest mode
-- [] Auth app
+- [x] Auth app
+    - [x] bearer access jwt token
+    - [x] hashed password + salt
 - [x] Admin Panel
 - [x] Docker
     - [x] Docker compose
