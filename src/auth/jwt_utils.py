@@ -1,23 +1,25 @@
-# to get a string like this run:
-# openssl rand -hex 32
 from datetime import timedelta, timezone, datetime
 from typing import Annotated
 
 import jwt
 from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jwt import InvalidTokenError
-from sqlalchemy import select
 from starlette import status
 
-from src.database import async_session
-from src.users.models import User
+from src.auth.schemas import TokenSchema
+from src.auth.service import AuthService
+from src.auth.pwd_utils import verify_password
+from src.config import settings
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login/")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
-ALGORITHM = "HS256"
+# to get a string like this run:
+# openssl rand -hex 32
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
@@ -51,16 +53,25 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        email: str = payload.get("sub")
-        if email is None:
+        username: str = payload.get("sub")
+        if username is None:
             raise credentials_exception
-        # token_data = TokenData(username=username)
     except InvalidTokenError:
         raise credentials_exception
-    async with async_session() as session:
-        stmt = select(User).where(User.email == email)
-        result = await session.execute(stmt)
-        user = result.scalar_one_or_none()
+    user = await AuthService.get_user_by_username(username)
     if user is None:
         raise credentials_exception
     return user
+
+
+async def get_access_token(form_data: OAuth2PasswordRequestForm) -> TokenSchema | None:
+    username = form_data.username
+    user = await AuthService.get_user_by_username(username)
+    data_dict = {"sub": username}
+    access_token = create_access_token(data_dict)
+
+    if user is None:
+        return None
+    if not verify_password(form_data.password, user.hashed_password):
+        return None
+    return TokenSchema(access_token=access_token, token_type="bearer")

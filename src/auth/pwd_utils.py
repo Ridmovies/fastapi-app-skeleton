@@ -15,5 +15,3 @@ def verify_password(
         password=password.encode(),
         hashed_password=hashed_password,
     )
-
-

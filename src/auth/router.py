@@ -1,17 +1,16 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordRequestForm
 
-
-from src.auth.jwt_utils import get_current_token_payload, get_current_user
+from src.auth.jwt_utils import get_current_user, get_access_token
 from src.auth.service import AuthService
 from src.database import SessionDep
 from src.users.models import User
 from src.users.schemas import UserCreate, UserSchema
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login/")
 auth_router = APIRouter()
+
 
 @auth_router.post("/register")
 async def register(session: SessionDep, user: UserCreate):
@@ -19,18 +18,10 @@ async def register(session: SessionDep, user: UserCreate):
 
 
 @auth_router.post("/login")
-async def login(session: SessionDep, user: UserCreate):
-    return await AuthService.login(session, user)
+async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+    return await get_access_token(form_data)
 
 
-@auth_router.get("/payload")
-async def payload(token: str):
-    return get_current_token_payload(token)
-
-
-
-@auth_router.get("/users/me/", response_model=UserSchema)
-async def read_users_me(session: SessionDep, token: str):
-    return await AuthService.get_user_by_token(session, token)
-
-
+@auth_router.get("/me", response_model=UserSchema)
+async def read_users_me(current_user: Annotated[User, Depends(get_current_user)]):
+    return current_user

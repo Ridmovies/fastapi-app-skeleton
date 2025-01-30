@@ -3,6 +3,7 @@ from httpx import AsyncClient
 
 # auth_prefix = f"/api/v1/auth"
 
+
 @pytest.mark.asyncio
 async def test_user_creation(client):
     response = await client.get(url="/dev")

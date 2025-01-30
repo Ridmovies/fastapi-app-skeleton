@@ -7,6 +7,7 @@ from src.models import Base
 
 router = APIRouter()
 
+
 @router.get("")
 async def root():
     return {"message": "Hello World"}
