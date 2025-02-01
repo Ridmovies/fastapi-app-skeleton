@@ -1,4 +1,6 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from typing import TYPE_CHECKING
+
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.models import Base
 
@@ -9,3 +11,9 @@ class User(Base):
     # TODO как защитить hashed_password от случайного показа?
     hashed_password: Mapped[bytes]
     is_active: Mapped[bool] = mapped_column(default=True)
+
+    posts: Mapped[list["Post"]] = relationship(back_populates="user")
+
+
+if TYPE_CHECKING:
+    from src.posts.models import Post

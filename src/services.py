@@ -27,25 +27,32 @@ class BaseService:
         return result.scalar_one_or_none()
 
     @classmethod
-    async def create(cls, session: AsyncSession, data):
+    async def create(cls, session: AsyncSession, data, user_id: int):
         data_dict = data.model_dump()
-        instance = cls.model(**data_dict)
+        instance = cls.model(**data_dict, user_id=user_id)
         session.add(instance)
         await session.commit()
         return instance
 
     @classmethod
-    async def delete(cls, session: AsyncSession, model_id: int):
-        query = select(cls.model).filter_by(id=int(model_id))
+    async def delete(cls, session: AsyncSession, model_id: int, user_id: int):
+        query = select(cls.model).filter_by(id=model_id, user_id=user_id)
         result = await session.execute(query)
         instance = result.scalar_one_or_none()
-        if instance:
+        if instance and instance.user_id == user_id:
             await session.delete(instance)
             await session.commit()
 
+
     @classmethod
-    async def update(cls, session: AsyncSession, model_id: int, update_data):
-        query = select(cls.model).filter_by(id=int(model_id))
+    async def update(
+            cls,
+            session: AsyncSession,
+            model_id: int,
+            update_data,
+            user_id: int,
+    ):
+        query = select(cls.model).filter_by(id=model_id, user_id=user_id)
         result = await session.execute(query)
         instance = result.scalar_one_or_none()
         if instance:
