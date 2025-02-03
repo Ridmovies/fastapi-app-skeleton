@@ -75,3 +75,5 @@ async def get_access_token(form_data: OAuth2PasswordRequestForm) -> TokenSchema 
     if not verify_password(form_data.password, user.hashed_password):
         return None
     return TokenSchema(access_token=access_token, token_type="bearer")
+
+

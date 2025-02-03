@@ -21,6 +21,11 @@ async def register(session: SessionDep, user: UserCreate):
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     return await get_access_token(form_data)
 
+# @auth_router.post("/api/logout")
+# async def logout(token: str = Depends(settings.TOKEN_MANAGER)):
+#     views.set_expiry(0, token)
+#     return {"response": "Logged out"}
+
 
 @auth_router.get("/me", response_model=UserSchema)
 async def read_users_me(current_user: Annotated[User, Depends(get_current_user)]):

@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from sqladmin import Admin
 
+from src.admin.admin_auth import authentication_backend
 from src.admin.views import PostAdmin
 from src.database import engine
 from src.dev.router import router as dev_router
@@ -18,7 +19,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
-admin = Admin(app, engine)
+admin = Admin(app=app, engine=engine, authentication_backend=authentication_backend)
 admin.add_view(PostAdmin)
 
 app.include_router(dev_router, prefix="/dev", tags=["dev"])
