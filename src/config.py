@@ -29,15 +29,7 @@ class Settings(BaseSettings):
 
     ## JWT RS256 (RSA)
     auth_jwt: AuthJWT = AuthJWT()
-    # ALGORITHM_2: str
-    # PRIVATE_KEY_PATH: Path
-    # PUBLIC_KEY_PATH: Path
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
-
-
-# class Settings2(BaseSettings):
-#
-#     auth_jwt: AuthJWT = AuthJWT()
 
 settings = Settings()
