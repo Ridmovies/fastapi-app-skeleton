@@ -12,7 +12,7 @@ from src.users.schemas import UserCreate, UserSchema
 auth_router = APIRouter()
 
 
-@auth_router.post("/register")
+@auth_router.post("/register", response_model=UserSchema)
 async def register(session: SessionDep, user: UserCreate):
     return await AuthService.create_user(session, user)
 

@@ -243,12 +243,13 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [x] async database
     - [x] Alembic
     - [x] database for tests
-    - [x] sqlite+aiosqlite or postgresql+asyncpg switch
+    - [x] sqlite+aiosqlite or postgresql+asyncpg
 - [x] example app "posts"
 - [x] fix pytest mode
 - [x] Auth app
     - [x] bearer access jwt token
     - [x] hashed password + salt
+    - [x] refresh token
 - [x] Admin Panel
 - [x] Docker
     - [x] Docker compose
